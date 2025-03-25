@@ -133,6 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 16111816}
   - component: {fileID: 16111815}
+  - component: {fileID: 16111817}
   m_Layer: 0
   m_Name: Ghost
   m_TagString: Untagged
@@ -168,6 +169,21 @@ Transform:
   - {fileID: 1700698852}
   m_Father: {fileID: 2052528664}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &16111817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 16111814}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f71d3b9aef5a7604f843274475632256, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tile: {fileID: 11400000, guid: f7dccc59b5e5d7a4f89903506de53805, type: 2}
+  mainBoard: {fileID: 2052528662}
+  trackingPiece: {fileID: 0}
 --- !u!1 &204789845
 GameObject:
   m_ObjectHideFlags: 0
@@ -180,7 +196,7 @@ GameObject:
   - component: {fileID: 204789847}
   - component: {fileID: 204789848}
   m_Layer: 0
-  m_Name: QueueHoldTilemaps
+  m_Name: QueueHold
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -658,7 +674,7 @@ GameObject:
   - component: {fileID: 1700698854}
   - component: {fileID: 1700698853}
   m_Layer: 0
-  m_Name: Tilemap
+  m_Name: GhostTilemap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -814,6 +830,7 @@ MonoBehaviour:
     tile: {fileID: 11400000, guid: f7dccc59b5e5d7a4f89903506de53805, type: 2}
   spawnPosition: {x: -1, y: 8, z: 0}
   boardSize: {x: 10, y: 21}
+  ghost: {fileID: 0}
 --- !u!156049354 &2052528663
 Grid:
   m_ObjectHideFlags: 0

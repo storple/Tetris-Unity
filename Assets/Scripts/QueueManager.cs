@@ -29,7 +29,7 @@ public class QueueManager : MonoBehaviour
         InitializeQueue();
     }
 
-    private void InitializeQueue()
+    public void InitializeQueue()
     {
         if (board == null)
         {
@@ -88,7 +88,7 @@ public class QueueManager : MonoBehaviour
         nextQueue.Enqueue(newPiece);
     }
 
-    private void UpdatePreview()
+    public void UpdatePreview()
     {
         previewTilemap.ClearAllTiles();
         int offset = 0;
@@ -101,6 +101,11 @@ public class QueueManager : MonoBehaviour
 
     private void DrawPreviewPiece(TetrominoData data, Vector3Int position)
     {
+        if (data.tile == null)
+        {
+            return;
+        }
+
         foreach (Vector3Int cell in data.cells)
         {
             previewTilemap.SetTile(position + cell, data.tile);
@@ -120,12 +125,7 @@ public class QueueManager : MonoBehaviour
 
         if (holdPiece.HasValue)
         {
-            Debug.Log($"Drawing hold piece: {holdPiece.Value.tetromino}");
             DrawPreviewPiece(holdPiece.Value, holdPosition);
-        }
-        else
-        {
-            Debug.Log("No piece in hold.");
         }
     }
 
@@ -140,5 +140,12 @@ public class QueueManager : MonoBehaviour
                 previewTilemap.SetTile(tilePosition, null);
             }
         }
+    }
+
+    public void ClearQueue()
+    {
+        nextQueue.Clear();
+        previewTilemap.ClearAllTiles();
+        holdPiece = null; // Reset the hold piece
     }
 }

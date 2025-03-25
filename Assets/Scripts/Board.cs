@@ -11,6 +11,7 @@ public class Board : MonoBehaviour
     public Vector3Int spawnPosition;
     public Vector2Int boardSize = new Vector2Int(10, 21);
     public QueueManager queueManager { get; private set; }
+    public Ghost ghost; // Reference to the Ghost script
 
     public RectInt Bounds
     {
@@ -36,11 +37,18 @@ public class Board : MonoBehaviour
         this.tilemap = GetComponentInChildren<Tilemap>();
         this.activePiece = GetComponentInChildren<Piece>();
         this.queueManager = FindObjectOfType<QueueManager>();
+        this.ghost = FindObjectOfType<Ghost>(); // Find the Ghost script in the scene
         this.holdUsed = false;
 
         for (int i = 0; i < this.tetrominoes.Length; i++)
         {
             this.tetrominoes[i].Initialize();
+        }
+
+        // Assign the mainBoard reference in the Ghost script
+        if (ghost != null)
+        {
+            ghost.mainBoard = this;
         }
     }
 
@@ -54,6 +62,9 @@ public class Board : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.W)) {
             HoldPiece();
         }    
+        if (Input.GetKeyDown(KeyCode.R)) {
+            EndGame();
+        }
     }
 
     public void SpawnPiece()
@@ -61,6 +72,8 @@ public class Board : MonoBehaviour
         TetrominoData data = this.queueManager.GetNextPiece();
         this.activePiece.Initialize(this, spawnPosition, data);
         Set(this.activePiece);
+
+        ghost.trackingPiece = this.activePiece;
     }
 
     public void Set(Piece piece)
@@ -171,5 +184,33 @@ public class Board : MonoBehaviour
                 this.tilemap.SetTile(tilePosition, null);
             }
         }
+    }
+
+    public void EndGame()
+    {
+        // Clear the board
+        tilemap.ClearAllTiles();
+
+        // Reset hold state
+        holdUsed = false;
+        HoldTetromino = null;
+
+        // Reinitialize TetrominoData instances
+        for (int i = 0; i < tetrominoes.Length; i++)
+        {
+            tetrominoes[i].Initialize();
+        }
+
+        // Clear the queue and reinitialize it
+        queueManager.ClearQueue();
+        queueManager.InitializeQueue();
+
+        // Clear the hold preview
+        queueManager.SetHoldPiece(default(TetrominoData));
+
+        // Restart the game by spawning a new piece
+        Start();
+
+        Debug.Log("Game Over. Restarted the game.");
     }
 }

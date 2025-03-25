@@ -41,8 +41,10 @@ public class Piece : MonoBehaviour
     }
 
     private void Update() {
-        this.board.Clear(this);
+        if (this.board == null) return; // Stop execution if the board is null (game ended)
 
+        this.board.Clear(this);
+        
         this.lockTime += Time.deltaTime;
 
         // rotation
@@ -95,6 +97,7 @@ public class Piece : MonoBehaviour
             Step();
         }
 
+        this.board.ghost?.UpdateGhost();
         this.board.Set(this);
     }
 
